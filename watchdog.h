@@ -13,12 +13,12 @@ public:
     bool isReady() const;
     bool isActive() const;
 
-    bool setInterval(int msec);
+    void setInterval(int msec);
     int  interval() const;
 
-    bool start(int msec);
-    bool start();
-    bool restart();
+    void start(int msec);
+    void start();
+    void restart();
     void stop();
     void clear();
 

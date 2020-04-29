@@ -22,10 +22,7 @@ bool MainApp::test()
     setup();
     t.start();
 
-    bool watchdogStarted = watchdog.start();
-    if (!watchdogStarted)
-        return false;
-
+    watchdog.start();
     timer.start();
 
     QTimer::singleShot(N*1000, [this] {

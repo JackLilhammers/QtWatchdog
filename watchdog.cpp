@@ -1,5 +1,7 @@
 #include "watchdog.h"
 
+#include <stdexcept>
+
 Watchdog::Watchdog(QObject *parent)
     : QObject(parent)
     , m_watchdog(this)
@@ -26,13 +28,12 @@ bool Watchdog::isValid(int msec) const
     return msec > 0;
 }
 
-bool Watchdog::setInterval(int msec)
+void Watchdog::setInterval(int msec)
 {
     if (!isValid(msec))
-        return false;
+        throw std::invalid_argument("msec < 1\n");
 
     m_watchdog.setInterval(msec);
-    return true;
 }
 
 int Watchdog::interval() const
@@ -40,27 +41,27 @@ int Watchdog::interval() const
     return m_watchdog.interval();
 }
 
-bool Watchdog::start(int msec)
+void Watchdog::start(int msec)
 {
 // Se msec non è accettabile non parte
-    return setInterval(msec) ? start() : false;
+    setInterval(msec);
+    start();
 }
 
-bool Watchdog::start()
+void Watchdog::start()
 {
     if (!isReady())
-        return false;
+        return;
 
     m_watchdog.start(interval());
-    return true;
 }
 
-bool Watchdog::restart()
+void Watchdog::restart()
 {
     if (!m_watchdog.isActive())
         emit restarted();
 
-    return start();
+    start();
 }
 
 void Watchdog::stop()
