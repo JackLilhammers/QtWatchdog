@@ -51,7 +51,7 @@ void Watchdog::start(int msec)
 void Watchdog::start()
 {
     if (!isReady())
-        return;
+        throw std::logic_error("Timeout interval not set!");
 
     m_watchdog.start(interval());
 }
